@@ -4,7 +4,7 @@ export const site = {
     "Building scalable, maintainable enterprise solutions with modern architectural patterns.",
   primaryCta: "View Projects",
   secondaryCta: "Download Resume",
-  email: "abdulrahmanalshwish2022@gmail.com",
+  email: "",
   github: "https://github.com/",
   linkedin: "https://www.linkedin.com/",
 } as const

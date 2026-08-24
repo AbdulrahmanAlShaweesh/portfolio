@@ -1,6 +1,6 @@
-import { FaLinkedin, FaWhatsapp, FaArrowRight, FaCheckCircle } from "react-icons/fa"
+import { FaLinkedin, FaArrowRight, FaCheckCircle } from "react-icons/fa"
 import { MdEmail } from "react-icons/md"
-import { motion } from "framer-motion"
+import { motion, type Variants } from "framer-motion"
 import { type FormEvent, useState } from "react"
 import { site } from "../data/content"
 
@@ -21,7 +21,7 @@ export function Contact() {
     form.reset()
   }
 
-  const fadeUpVariant = {
+  const fadeUpVariant: Variants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
@@ -41,14 +41,8 @@ export function Contact() {
       icon: FaLinkedin,
       label: "LinkedIn",
       value: "Contact throw LinkedIn",
-      href: "https://www.linkedin.com/in/abdulrahman-alshaweesh-73130826b/",
+      href: "",
     },
-    // {
-    //   icon: FaWhatsapp,
-    //   label: "WhatsApp",
-    //   value: "+966 5X XXX XXXX",
-    //   href: "https://wa.me/9665XXXXXXXX",
-    // },
   ]
 
   return (
@@ -71,7 +65,6 @@ export function Contact() {
               className="p-8 sm:p-10 flex flex-col justify-between"
             >
               <div>
-                {/* Header مدمج لمنع اختلاف الخطوط */}
                 <motion.div variants={fadeUpVariant}>
                   <p className="text-xs font-semibold tracking-widest text-sky-400 uppercase">
                     Contact
@@ -80,7 +73,7 @@ export function Contact() {
                     Let’s ship the next system
                   </h2>
                 </motion.div>
-                
+
                 <motion.p
                   variants={fadeUpVariant}
                   className="mt-4 text-sm leading-relaxed text-zinc-400"
@@ -89,7 +82,7 @@ export function Contact() {
                   delivery, and maintainable enterprise workflows? Reach out directly.
                 </motion.p>
 
-                {/* طرق التواصل باستخدام React Icons */}
+                {/* Contact options */}
                 <motion.div variants={fadeUpVariant} className="mt-8 flex flex-col gap-4">
                   {contactMethods.map((method, index) => {
                     const Icon = method.icon
@@ -137,7 +130,7 @@ export function Contact() {
                     placeholder="Your name"
                   />
                 </motion.label>
-                
+
                 <motion.label variants={fadeUpVariant} className="block text-sm text-zinc-300">
                   Email
                   <input
