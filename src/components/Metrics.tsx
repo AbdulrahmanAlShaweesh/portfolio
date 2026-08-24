@@ -1,4 +1,4 @@
-import { useRef, useState, MouseEvent } from "react"
+import { useRef, useState,type MouseEvent } from "react"
 import { Box, Cloud, Code2, Database } from "lucide-react"
 import { motion } from "framer-motion"
 import { techStack } from "../data/content"

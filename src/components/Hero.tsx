@@ -1,7 +1,6 @@
 import { ArrowDown, ArrowRight, MessageSquare, FileDown } from "lucide-react"
 import { motion, type Variants } from "framer-motion"
 import { site } from "../data/content"
-import { downloadResume } from "../lib/downloadResume"
 
 export function Hero() {
   const containerVariants: Variants = {

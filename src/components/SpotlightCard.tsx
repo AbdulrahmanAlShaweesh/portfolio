@@ -1,4 +1,4 @@
-import { useRef, useState, MouseEvent } from "react"
+import { useRef, useState,type MouseEvent } from "react"
 
 export function SpotlightCard({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   const divRef = useRef<HTMLDivElement>(null)
@@ -13,7 +13,7 @@ export function SpotlightCard({ children, className = "" }: { children: React.Re
 
   return (
     <div
-      ref={divRef}
+    ref={divRef}
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setOpacity(1)}
       onMouseLeave={() => setOpacity(0)}
