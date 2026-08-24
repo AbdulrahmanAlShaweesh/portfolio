@@ -13,7 +13,7 @@ export function Hero() {
         delayChildren: 0.1,
       },
     },
-  }
+  } as const
 
   const fadeUpVariant = {
     hidden: { opacity: 0, y: 24 },
