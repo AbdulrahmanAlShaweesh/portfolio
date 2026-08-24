@@ -43,12 +43,12 @@ export function Contact() {
       value: "Contact throw LinkedIn",
       href: "https://www.linkedin.com/in/abdulrahman-alshaweesh-73130826b/",
     },
-    {
-      icon: FaWhatsapp,
-      label: "WhatsApp",
-      value: "+966 5X XXX XXXX",
-      href: "https://wa.me/9665XXXXXXXX",
-    },
+    // {
+    //   icon: FaWhatsapp,
+    //   label: "WhatsApp",
+    //   value: "+966 5X XXX XXXX",
+    //   href: "https://wa.me/9665XXXXXXXX",
+    // },
   ]
 
   return (
