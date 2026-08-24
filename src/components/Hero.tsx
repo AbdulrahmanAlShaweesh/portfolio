@@ -1,4 +1,4 @@
-import { ArrowDown, ArrowRight, MessageSquare, FileDown } from "lucide-react"
+import { ArrowDown, ArrowRight, MessageSquare } from "lucide-react"
 import { motion, type Variants } from "framer-motion"
 import { site } from "../data/content"
 

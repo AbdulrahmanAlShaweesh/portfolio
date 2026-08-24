@@ -1,5 +1,3 @@
-import { Globe, SquareCode } from "lucide-react"
-import { motion } from "framer-motion"
 import { site } from "../data/content"
 
 export function Footer() {
@@ -12,11 +10,9 @@ export function Footer() {
         <div className="flex flex-col items-center gap-1 sm:items-start">
           <p className="text-zinc-400">{site.headline}</p>
           <p className="text-xs text-zinc-600">
-            © {currentYear} {site.name ?? "All rights reserved."}
+            © {currentYear} All rights reserved.
           </p>
         </div>
-
-       
       </div>
     </footer>
   )

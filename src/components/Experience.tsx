@@ -1,5 +1,5 @@
 import { BarChart3, Layers } from "lucide-react"
-import { motion, useScroll, useTransform } from "framer-motion"
+import { motion, useScroll, useTransform, type Variants } from "framer-motion"
 import { useRef } from "react"
 import { experience } from "../data/content"
 import { SectionHeading } from "./SectionHeading"
@@ -9,27 +9,27 @@ const icons = {
   "data-analysis": BarChart3,
 } as const
 
-// تعريف الـ Variants للأنيميشن المركب
-const cardVariants = {
+// تعريف الـ Variants للأنيميشن المركب مع تحديد Type وحل أخطاء TypeScript
+const cardVariants: Variants = {
   hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
       duration: 0.5,
-      ease: [0.22, 1, 0.36, 1],
+      ease: [0.22, 1, 0.36, 1] as const,
       staggerChildren: 0.15,
     },
   },
 }
 
-const iconVariants = {
+const iconVariants: Variants = {
   hidden: { opacity: 0, scale: 0.5 },
   visible: {
     opacity: 1,
     scale: 1,
     transition: {
-      type: "spring",
+      type: "spring" as const,
       stiffness: 200,
       damping: 15,
     },
