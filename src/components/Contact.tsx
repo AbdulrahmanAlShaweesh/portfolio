@@ -41,7 +41,7 @@ export function Contact() {
       icon: FaLinkedin,
       label: "LinkedIn",
       value: "Contact through LinkedIn",
-      href: "",
+      href: "https://www.linkedin.com/in/abdulrahman-alshaweesh-73130826b/?skipRedirect=true",
     },
   ]
 
