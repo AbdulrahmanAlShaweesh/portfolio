@@ -26,7 +26,7 @@ export function Contact() {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.5, ease: [0.21, 0.47, 0.32, 0.98] },
+      transition: { duration: 0.5, ease: [0.21, 0.47, 0.32, 0.98] as const },
     },
   }
 
@@ -40,7 +40,7 @@ export function Contact() {
     {
       icon: FaLinkedin,
       label: "LinkedIn",
-      value: "Contact throw LinkedIn",
+      value: "Contact through LinkedIn",
       href: "",
     },
   ]
