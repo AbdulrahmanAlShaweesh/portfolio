@@ -1,24 +1,42 @@
-import { FaLinkedin, FaArrowRight, FaCheckCircle } from "react-icons/fa"
+import { FaLinkedin, FaArrowRight, FaCheckCircle, FaExclamationCircle, FaSpinner } from "react-icons/fa"
 import { MdEmail } from "react-icons/md"
 import { motion, type Variants } from "framer-motion"
 import { type FormEvent, useState } from "react"
 import { site } from "../data/content"
 
 export function Contact() {
-  const [status, setStatus] = useState<"idle" | "sent">("idle")
+  const [status, setStatus] = useState<"idle" | "loading" | "sent" | "error">("idle")
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    setStatus("loading")
+
     const form = event.currentTarget
-    const data = new FormData(form)
-    const name = String(data.get("name") ?? "").trim()
-    const email = String(data.get("email") ?? "").trim()
-    const message = String(data.get("message") ?? "").trim()
-    const subject = encodeURIComponent(`Portfolio inquiry from ${name}`)
-    const body = encodeURIComponent(`${message}\n\n— ${name} (${email})`)
-    window.location.href = `mailto:${site.email}?subject=${subject}&body=${body}`
-    setStatus("sent")
-    form.reset()
+    const formData = new FormData(form)
+
+    // جلب المفتاح بأمان من ملف البيئة .env
+    const apiKey = import.meta.env.VITE_WEB3FORMS_KEY
+    if (apiKey) {
+      formData.append("access_key", apiKey)
+    }
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData,
+      })
+
+      const data = await response.json()
+
+      if (data.success) {
+        setStatus("sent")
+        form.reset()
+      } else {
+        setStatus("error")
+      }
+    } catch (error) {
+      setStatus("error")
+    }
   }
 
   const fadeUpVariant: Variants = {
@@ -55,14 +73,14 @@ export function Contact() {
           transition={{ duration: 0.6, ease: "easeOut" }}
           className="overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-900/50 backdrop-blur-sm shadow-xl"
         >
-          <div className="grid lg:grid-cols-2">
-            {/* Left Column: Info & Freelance Contact Methods */}
+          <div className="grid grid-cols-1 lg:grid-cols-2">
+            {/* Left Column: Info & Contact Methods */}
             <motion.div
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
               transition={{ staggerChildren: 0.1 }}
-              className="p-8 sm:p-10 flex flex-col justify-between"
+              className="p-6 sm:p-10 flex flex-col justify-between"
             >
               <div>
                 <motion.div variants={fadeUpVariant}>
@@ -94,14 +112,16 @@ export function Contact() {
                         rel={method.href.startsWith("http") ? "noopener noreferrer" : undefined}
                         whileHover={{ x: 4 }}
                         whileTap={{ scale: 0.98 }}
-                        className="group flex items-center gap-3.5 rounded-2xl border border-zinc-800/80 bg-zinc-950/40 p-3.5 transition-all duration-300 hover:border-sky-500/30 hover:bg-zinc-950/80"
+                        className="group flex items-center gap-3.5 min-w-0 rounded-2xl border border-zinc-800/80 bg-zinc-950/40 p-3.5 transition-all duration-300 hover:border-sky-500/30 hover:bg-zinc-950/80"
                       >
                         <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-zinc-800 bg-zinc-900 text-sky-400 group-hover:border-sky-500/40 group-hover:bg-sky-500/10 group-hover:text-sky-300 transition-all">
                           <Icon className="text-lg transition-transform duration-300 group-hover:scale-110" />
                         </div>
-                        <div className="flex flex-col">
+                        <div className="flex flex-col min-w-0">
                           <span className="text-xs font-medium text-zinc-500">{method.label}</span>
-                          <span className="text-sm text-zinc-200 transition-colors group-hover:text-sky-400">{method.value}</span>
+                          <span className="text-sm text-zinc-200 transition-colors group-hover:text-sky-400 truncate">
+                            {method.value}
+                          </span>
                         </div>
                       </motion.a>
                     )
@@ -117,40 +137,40 @@ export function Contact() {
               whileInView="visible"
               viewport={{ once: true }}
               transition={{ staggerChildren: 0.08, delayChildren: 0.1 }}
-              className="border-t border-zinc-800 p-8 sm:p-10 lg:border-t-0 lg:border-l"
+              className="border-t border-zinc-800 p-6 sm:p-10 lg:border-t-0 lg:border-l"
             >
-              <div className="grid gap-4 sm:grid-cols-2">
-                <motion.label variants={fadeUpVariant} className="block text-sm text-zinc-300">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <motion.label variants={fadeUpVariant} className="block text-sm text-zinc-300 min-w-0">
                   Name
                   <input
                     required
                     name="name"
                     autoComplete="name"
-                    className="mt-2 w-full rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2.5 text-zinc-50 outline-none ring-sky-500/40 placeholder:text-zinc-600 focus:border-sky-500 focus:ring-2 transition-all duration-200"
+                    className="mt-2 w-full min-w-0 rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2.5 text-zinc-50 outline-none ring-sky-500/40 placeholder:text-zinc-600 focus:border-sky-500 focus:ring-2 transition-all duration-200"
                     placeholder="Your name"
                   />
                 </motion.label>
 
-                <motion.label variants={fadeUpVariant} className="block text-sm text-zinc-300">
+                <motion.label variants={fadeUpVariant} className="block text-sm text-zinc-300 min-w-0">
                   Email
                   <input
                     required
                     type="email"
                     name="email"
                     autoComplete="email"
-                    className="mt-2 w-full rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2.5 text-zinc-50 outline-none ring-sky-500/40 placeholder:text-zinc-600 focus:border-sky-500 focus:ring-2 transition-all duration-200"
+                    className="mt-2 w-full min-w-0 rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2.5 text-zinc-50 outline-none ring-sky-500/40 placeholder:text-zinc-600 focus:border-sky-500 focus:ring-2 transition-all duration-200"
                     placeholder="you@company.com"
                   />
                 </motion.label>
               </div>
 
-              <motion.label variants={fadeUpVariant} className="mt-4 block text-sm text-zinc-300">
+              <motion.label variants={fadeUpVariant} className="mt-4 block text-sm text-zinc-300 min-w-0">
                 Project details
                 <textarea
                   required
                   name="message"
                   rows={5}
-                  className="mt-2 w-full resize-y rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2.5 text-zinc-50 outline-none ring-sky-500/40 placeholder:text-zinc-600 focus:border-sky-500 focus:ring-2 transition-all duration-200"
+                  className="mt-2 w-full min-w-0 resize-none rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2.5 text-zinc-50 outline-none ring-sky-500/40 placeholder:text-zinc-600 focus:border-sky-500 focus:ring-2 transition-all duration-200"
                   placeholder="Scope, stack, and timeline"
                 />
               </motion.label>
@@ -158,28 +178,49 @@ export function Contact() {
               <motion.div variants={fadeUpVariant} className="mt-5 flex items-center gap-4">
                 <motion.button
                   type="submit"
+                  disabled={status === "loading"}
                   whileHover={{ scale: 1.02, y: -1 }}
                   whileTap={{ scale: 0.98 }}
-                  className="group inline-flex items-center gap-2 rounded-full bg-sky-500 px-5 py-2.5 text-sm font-semibold text-zinc-950 shadow-md shadow-sky-500/10 transition-all duration-300 hover:bg-sky-400 hover:shadow-sky-400/20"
+                  className="group inline-flex items-center gap-2 rounded-full bg-sky-500 px-5 py-2.5 text-sm font-semibold text-zinc-950 shadow-md shadow-sky-500/10 transition-all duration-300 hover:bg-sky-400 hover:shadow-sky-400/20 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Send message
-                  <FaArrowRight
-                    className="transition-transform duration-300 group-hover:translate-x-1"
-                  />
+                  {status === "loading" ? (
+                    <>
+                      Sending...
+                      <FaSpinner className="animate-spin" />
+                    </>
+                  ) : (
+                    <>
+                      Send message
+                      <FaArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
+                    </>
+                  )}
                 </motion.button>
               </motion.div>
 
-              {status === "sent" ? (
+              {/* Status Feedback */}
+              {status === "sent" && (
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3 }}
-                  className="mt-4 flex items-center gap-2 text-sm text-sky-400"
+                  className="mt-4 flex items-center gap-2 text-sm text-emerald-400"
                 >
                   <FaCheckCircle className="shrink-0" />
-                  <span>Your mail client should open with the inquiry filled in.</span>
+                  <span>Message sent successfully! I’ll get back to you soon.</span>
                 </motion.div>
-              ) : null}
+              )}
+
+              {status === "error" && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="mt-4 flex items-center gap-2 text-sm text-rose-400"
+                >
+                  <FaExclamationCircle className="shrink-0" />
+                  <span>Something went wrong. Please try again later.</span>
+                </motion.div>
+              )}
             </motion.form>
           </div>
         </motion.div>
